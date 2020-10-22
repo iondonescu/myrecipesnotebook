@@ -42,7 +42,8 @@ body {
     text-decoration: none;
 }
 .login{
-    margin: 5px;
+    margin: 5px;// clasa asta cred ca-i inutila
+
 }
 
 .nav-bar{

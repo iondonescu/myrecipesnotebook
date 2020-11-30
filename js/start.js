@@ -30,4 +30,18 @@
 // }
 // let list = $('.item');
 // list.css('color','red');
-console.log($('.item').html());
+let text = document.getElementById("text");
+let btn = document.getElementById("btn");
+
+btn.addEventListener("click",changeText);
+function changeText() {
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            text.innerHTML = xmlhttp.responseText;
+        }
+    }
+        xmlhttp.open("GET", "file.php", true); //Change file.php to the location of your php file
+        xmlhttp.send();
+ }

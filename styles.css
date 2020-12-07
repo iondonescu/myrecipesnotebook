@@ -39,11 +39,22 @@ body {
 .login-section{
     width: 20%;
     float:left;
-    text-decoration: none;
+    text-align: end;
+    margin: 10px;
+    display: flex;
 }
-.login{
-    margin: 5px;// clasa asta cred ca-i inutila
 
+.item-login{
+    margin: 5px;
+    text-decoration: none;
+    background-color:lightblue;
+    border: 2px solid #36454b;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.item-login:hover {
+    color:#000;
+    background-color: #eeeeee;
 }
 
 .nav-bar{
@@ -60,6 +71,7 @@ body {
 ul li{
     float:left;
 }
+
 .item {
     font-size: 20px;
     line-height: 30px;
@@ -136,9 +148,13 @@ footer{
     text-align: center;
  }
 
+
+/**
+* responsive design
+ */
 @media screen and (max-width: 767px){
     body {
-        background-color:yellow;
+        /*background-color:yellow;
         /* de completat cu code pt hamburger */
     }
     .food-image{
@@ -148,14 +164,23 @@ footer{
 
 @media screen and (min-width: 768px) and (max-width:991px ){
     body {
-        background-color:yellow;
+        /*background-color:yellow;*/
+
     }
 }
-@media screen and (min-width: 992px) and (max-width:1199px ){
+@media screen and (min-width: 992px) and (max-width:1199px ) {
     body {
 
-        }
     }
+
+    .nav-bar{
+        margin-right: auto;
+        margin-left: auto;
+    }
+    .item{
+
+    }
+}
 
 @media (min-width: 1200px){
     body{

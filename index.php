@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,16 +21,15 @@ login/sign up -->
             <img class="header_gif" src="images/fire.gif" alt="fire">
         </div>
         <div class="page-title">
-            <h1>My recipes notebook</h1>
+            <h1>Carnețelul de rețete culinare</h1>
         </div>
-
         <div class="login-section login">
             <!-- aici ar trebui sa pun un hamburger pt screen less than  px
             children trebuiesc stilizati in css pentru a fi responsive 22.10.2020
             cred ca nav bar ar trebui completata cu autentificare si inregistrare
             visible in phone/tablet mode, hide in desktop mode
             -->
-            <a class="item_login" href="autentificare.html">Autentificare</a>
+            <a class="item-login" href="autentificare/autentificare.php">Autentificare</a>
             <!-- DE IMPLEMENTAT (comentat 22.10.2020)
                 Pagina de autentificare (pop-up window)
                 1. Fetch-uesc date,
@@ -41,7 +39,7 @@ login/sign up -->
                 4. De implemetat sectiune adauga retetele mele
                  to be continued
             -->
-            <a class="item_login" href="inregistrare/inregistrare.php">Inregistrare</a>
+            <a class="item-login" href="inregistrare/inregistrare.php">Inregistrare</a>
             <!-- DE IMPLEMENTAT (comentat 22.10.2020)
                  Pagina de autentificare (pop-up window)
                  1. Fetch-uesc date
@@ -51,27 +49,27 @@ login/sign up -->
                   to be continued
              -->
         </div>
-    </div>
+
 </header>
 <!-- sfarsit structura repetitiva -->
-    <div class="nav-bar">
-     <div class="nav-bar-items">
-         <ul>
-             <li><a class="item" href="./sosuri.html">Sosuri</a></li>
-             <li><a class="item" href="#">Semipreparate</a></li>
-             <li><a class="item" href="#">Gustări</a></li>
-             <li><a class="item" href="#">Supe, ciorbe și borșuri</a></li>
-             <li><a class="item" href="#">Mâncăruri</a></li>
-             <li><a class="item" href="#">Fripturi și garnituri</a></li>
-             <li><a class="item" href="#">Salate</a></li>
-             <li><a class="item" href="#">Preparate din vânat</a></li>
-             <li><a class="item" href="#">Dulciuri</a></li>
-             <!-- fiecare li trebuie sa aiba corespodentul unei pagini,
-             incarcata dinamic in functie de ultimile postari ca timp.19.10.2020 -->
+<div class="nav-bar">
+    <div class="nav-bar-items">
+        <ul >
+            <li><a class="item" href="./sosuri.html">Sosuri</a></li>
+            <li><a class="item" href="#">Semipreparate</a></li>
+            <li><a class="item" href="#">Gustări</a></li>
+            <li><a class="item" href="#">Supe, ciorbe și borșuri</a></li>
+            <li><a class="item" href="#">Mâncăruri</a></li>
+            <li><a class="item" href="#">Fripturi și garnituri</a></li>
+            <li><a class="item" href="#">Salate</a></li>
+            <li><a class="item" href="#">Preparate din vânat</a></li>
+            <li><a class="item" href="#">Dulciuri</a></li>
+            <!-- fiecare li trebuie sa aiba corespodentul unei pagini,
+            incarcata dinamic in functie de ultimile postari ca timp.19.10.2020 -->
 
-         </ul>
-     </div>
+        </ul>
     </div>
+</div>
 
 
 <main class="main-section">
@@ -87,14 +85,14 @@ login/sign up -->
 </main>
 <!-- structura repetitiva pe mai multe pagini - index
 login/sign up -->
-<footer >
+<footer>
     <div class="footer">
         <p>&copy 2020-2021 The owners of this application are Ion and Mihai Donescu</p>
     </div>
 </footer>
 <!-- sfarsit structura repetitiva -->
 
-<script type="text/javascript" src="./js/start.js"></script>
+<!--<script type="text/javascript" src="./js/start.js"></script>-->
 
 </body>
 </html>

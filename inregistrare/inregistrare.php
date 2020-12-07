@@ -1,45 +1,116 @@
 <?php
+session_start();
 include ("../connect.php");
+/**
+ * salvam in baza de date data la care se inregistreaza noul utilizator
+ */
+date_default_timezone_set('Europe/Bucharest');
+//variabila utilizata pt a afisa erori
 $raspuns ="";
 if (isset($_POST['submit'])) {
-    $nume = $_POST['nume'];
-    $prenume = $_POST['prenume'];
-    $email = $_POST['email'];
+    //mysqli_real_escape_string - function that avoid mysqli injection with malicious code
+    if (isset($connect)) {
+        $nume = mysqli_real_escape_string($connect, $_POST['nume']);
+        $prenume = mysqli_real_escape_string($connect, $_POST['prenume']);
+        $email = mysqli_real_escape_string($connect, $_POST['email']);
+    }
     $parola = $_POST['parola'];
     $confirmaParola = $_POST['confirmaParola'];
     $avatar = $_FILES['imageupload']['name'];
     $tmp_avatar = $_FILES['imageupload']['tmp_name'];
     $avatarSize = $_FILES['imageupload']['size'];
+    $today = date("F j, Y, g:i a");// data la care se inregistreaza userul
+    //fetch-uim intr-un array date introduse
+    $interogare = mysqli_query($connect, "SELECT email FROM users WHERE email = '$email'");
+    $raspunsInterogare = mysqli_fetch_assoc($interogare);
+    //var_dump($raspunsInterogare);
 
-    //echo $nume."<br/>".$prenume."<br/>".$email."<br/>".$parola."<br/>".$confirmaParola."<br/>".$avatar."<br/>".$avatarSize."<br/>";
-    if(strlen($nume) < 2){
+    //echo $nume."<br/>".$prenume."<br/>".$email."<br/>".$parola."<br/>".$confirmaParola."<br/>".$avatar."<br/>".$avatarSize."<br/>".$data;
+    if (strlen($nume) < 2) {
         $raspuns = "Nume prea scurt";
-    }
-    else if (strlen($prenume) < 2){
+    } else if (strlen($prenume) < 2) {
         $raspuns = "Prenume prea scurt";
-    }
-    else if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $raspuns = "Introduceti o adresa de email valida";
-    }
-    else if(strlen($parola) < 6){
+    } //2020.12.01 de implementat validare format email
+    else if (strlen($parola) < 6) {
         $raspuns = "Parola trebuie sa aibe cel putin 6 caractere";
-    }
-    else if($parola !== $confirmaParola){
+    } else if ($parola !== $confirmaParola) {
         $raspuns = "Parolele nu se potrivesc";
+    } // se poate implementa si fara poza de profil, dar e mai cool
+    else if ($avatar == "") {
+        $raspuns = "Va rugam sa incarcati o poza de profil";
     }
-    else{
-        //30.11.2020 de implementat daca email-ul exista in baza de date
-            //$raspuns = "Inregistare cu succes";
-            $insertQuery = "INSERT INTO users (nume, prenume,email,parola,avatar) VALUES ('$nume','$prenume','$email','$parola','$avatar')";
-            if(mysqli_query($connect,$insertQuery)){
-                if(move_uploaded_file($tmp_avatar,"../images/users/$avatar")) {
-                    $raspuns = "Inregistrare cu succes";
+    //poza de profil nu poate sa fie mai mare de 1 MB
+    //atentie si la setarile phpmyadmin
+    else if ($avatarSize > 1048576 || $avatarSize == 0) {
+        $raspuns = "Poza de profil nu poate fi mai mare de 1MB ";
+    } else {
+        //daca nu exista inregistrata adresa de mail
+        if (empty($raspunsInterogare['email'])) {
+
+            //criptare parola cu functia md5
+            $parola = md5($parola);
+            // Verificam extensia avatarului, de implementat exceptia daca in denumire contine "."
+            $avatarExt = explode(".", $avatar);
+            $avatarExtention = $avatarExt[1];
+            //Verificam daca avatarul are extensia png sau jpg
+            if (strtoupper($avatarExtention) == "PNG" || strtoupper($avatarExtention) == "JPG") {
+                //generam nume unic pentru avatar
+                $avatar = rand(0, 10000) . time() . "." . $avatarExtention;
+
+                //$raspuns = "Inregistare cu succes";
+                /**
+                 * Daca validarea campurilor este ok inseram in baza de date
+                 */
+                $insertQuery = "INSERT INTO users (nume,prenume,email,parola,avatar,date) VALUES ('$nume','$prenume','$email','$parola','$avatar','$today')";
+
+                if (!empty($connect)) {
+                    if (mysqli_query($connect, $insertQuery)) {
+                        if (move_uploaded_file($tmp_avatar, "../images/users/$avatar")) {
+                            $raspuns = "Inregistrare cu succes";
+                        } else {
+                            $raspuns = "Serverul nu suporta avatarul.<br/> Alegeti alta poza de profil";
+                        }
+                    }
                 }
-                else {
-                    $raspuns = "Avatarul nu a fost salvat";
-                }
+
+            } else {
+                $raspuns = "Avatarul trebuie sa fie imagine cu extensia png sau jpg";
             }
-        //daca exista $raspuns = "exista deja un user cu aceasta adresa de email <a href="autentificare.php">Autentificare</a>";
+            if ($stmt = $connect->prepare('SELECT id,nume,prenume,email,parola,avatar FROM users WHERE email = ?')) {
+
+                $stmt->bind_param('s', $_POST['email']);
+                $stmt->execute();
+
+                /**
+                 * Inregistram datele utilizatorului in zona de memorie la care pointeaza cursorul
+                 **/
+                $stmt->store_result();
+
+                /**
+                 * daca interogarea a returnat o singura linie( adresa de mail este unica, conform conditiilor
+                 * impuse la inregistrare in DB)
+                 **/
+                if ($stmt->num_rows == 1) {
+                    $stmt->bind_result($id, $nume, $prenume, $email, $parola, $avatar);
+                    $stmt->fetch();
+                }
+                session_regenerate_id();
+                $_SESSION['loggedin'] = TRUE;
+                $_SESSION['nume'] = $nume;
+                $_SESSION['prenume'] = $prenume;
+                $_SESSION['id'] = $id;
+                $_SESSION['avatar'] = $avatar;
+                var_dump($_SESSION['loggedin']);
+                header("location:../home.php");
+
+            } else {
+                $raspuns = "Aceasta adresa de email deja exista";
+            }
+            $stmt->close();
+        }
+        //
     }
 }
 ?>
@@ -49,20 +120,14 @@ if (isset($_POST['submit'])) {
 <head>
 
     <title>Inregistrare</title>
-    <link rel="stylesheet" href="css/styles_inregistrare.css"/>
-
+    <link rel="stylesheet" href="css/inregistrare.css"/>
 </head>
 
 
 <body>
 
 <div id="wrapper">
-    <!--
-        <div id="menu">
-            <a href="../index.php">Sign Up</a>
-            <a href="login.php">Login</a>
-        </div-->
-
+    <h3 id="title">Bine ai venit  pe <br/> myrecipesnotebook.com</h3>
     <div id="formDiv">
         <!-- method POST is for background data "you don't see anything in URL" -->
         <!--enctype -- to be able to upload file such as images -->
@@ -94,27 +159,27 @@ if (isset($_POST['submit'])) {
             </label><br/><br/>
 
             <label>
-                Alegeti imagine de profil:<br/>
-                <input type="file"
-                       id="avatar" name="imageupload"
-                       accept="image/png, image/jpeg">
+                Seteaza imaginea de profil:<br/><br/>
+                <input type="file" id="avatar" name="imageupload"/>
             </label><br/><br/>
 
             <input type="checkbox" name="conditions"/>
-            <label>Sunt de acord cu termenii si conditiile</label><br/><br/>
+            <label>Sunt de acord cu termenii si conditiile<a href="#"><br/><sup>Termenii si conditiile</sup></a></label><br/><br/>
 
-            <input type="submit" class="theButtons" name="submit" value="Trimite"/>
+            <input  id="trimite" type="submit" class="theButtons" name="submit" value="Trimite"/>
 
         </form>
 
     </div>
+
     <div id="raspuns">
         <?php echo $raspuns; ?>
     </div>
 
 </div>
+<!--2020.12.01 De stilizat form-ul de inregistrare si adaugat butonul Renunta.
+La click se revine la pagina index.php -->
 
 </body>
-
 </html>
 

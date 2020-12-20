@@ -1,6 +1,6 @@
 <?php
 session_start();
-include ("../connect.php");
+include("../conectare.php");
 include("../functii/emailExists.php");
 
 $raspuns ="";//variabila utilizata pt a afisa erori ex: parola introdusa gresit
@@ -46,7 +46,7 @@ if (isset($_POST['submit'])) {
                         $_SESSION['id'] = $id;
                         $_SESSION['avatar'] = $avatar;
                         // redirectioneaza catre pagina utilizatorului
-                        header('Location: ../home.php');
+                        header('Location: ../users/user_home_page.php');
                     }
                     else {
                         $raspuns = "Parola incorecta";
@@ -55,7 +55,7 @@ if (isset($_POST['submit'])) {
             }
             else {
                 // Incorrect username
-                $raspuns = "Acest email nu exista";
+                $raspuns = "Acest email nu exista!Reîncercați sau mergeți la pagina de înregistrare.";
             }
             $stmt->close();
         }
@@ -67,15 +67,27 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-
     <title>Autentificare</title>
     <link rel="stylesheet" href="css/autentificare.css"/>
-
 </head>
 
 
 <body>
+<header id="header">
+    <div class="header_inner">
+        <div class="gif">
+            <img class="header_gif" src="../fire.gif" alt="fire">
+        </div>
+        <div class="page_title">
+            <h1>Carnețelul de rețete culinare</h1>
+        </div>
+        <div class="login_section login">
+            <p class="item_login text_color">Autentificare</p>
+            <a class="item_login item_login_hover" href="../inregistrare/inregistrare.php">Inregistrare</a>
+        </div>
+    </div>
 
+</header>
 <div id="wrapper">
     <h3 id="title">Bine ai venit  pe <br/> myrecipesnotebook.com</h3>
     <div id="formDiv">
@@ -85,15 +97,15 @@ if (isset($_POST['submit'])) {
 
             <label>
                 Email:<br/>
-                <input type="text" name="email" class="inputFields" required/>
+                <input type="text" name="email" class="input_fields" required/>
             </label><br/><br/>
 
             <label>
                 Parola:<br/>
-                <input type="password" name="parola" class="inputFields" required/>
+                <input type="password" name="parola" class="input_fields" required/>
             </label><br/><br/>
 
-            <input type="submit" class="theButtons" name="submit" value="Autentifica"/>
+            <input type="submit" class="the_buttons" name="submit" value="Autentifica"/>
 
         </form>
 
@@ -104,6 +116,11 @@ if (isset($_POST['submit'])) {
     </div>
 
 </div>
+<footer>
+    <div class="footer">
+        <p>&copy 2020-2021 Dezvoltarea Aplicațiilor Web - FMI - Ion Donescu</p>
+    </div>
+</footer>
 
 </body>
 

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- A se adauga meta tag-uri -->
     <title>Carnețelul</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles_index.css">
     <link rel='icon' href='favicon.ico' type='image/x-icon'>
     <script src="https://kit.fontawesome.com/c9f2ec41c3.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -16,44 +16,28 @@
 <!-- structura repetitiva pe mai multe pagini - index
 login/sign up -->
 <header id="header">
-    <div class="header-inner">
+    <div class="header_inner">
         <div class="gif">
-            <img class="header_gif" src="images/fire.gif" alt="fire">
+            <img class="header_gif" src="fire.gif" alt="fire">
         </div>
-        <div class="page-title">
+        <div class="page_title">
             <h1>Carnețelul de rețete culinare</h1>
         </div>
-        <div class="login-section login">
+        <div class="login_section login">
             <!-- aici ar trebui sa pun un hamburger pt screen less than  px
             children trebuiesc stilizati in css pentru a fi responsive 22.10.2020
             cred ca nav bar ar trebui completata cu autentificare si inregistrare
             visible in phone/tablet mode, hide in desktop mode
             -->
-            <a class="item-login" href="autentificare/autentificare.php">Autentificare</a>
-            <!-- DE IMPLEMENTAT (comentat 22.10.2020)
-                Pagina de autentificare (pop-up window)
-                1. Fetch-uesc date,
-                2. Verific baza de date privind datele de autentificare cu tot ce inseamna exceptions
-                3. Returnez pagina principala in partea main cu ultimele retete postate de mine
-                si apoi retetele tuturor utilizatorilor
-                4. De implemetat sectiune adauga retetele mele
-                 to be continued
-            -->
-            <a class="item-login" href="inregistrare/inregistrare.php">Inregistrare</a>
-            <!-- DE IMPLEMENTAT (comentat 22.10.2020)
-                 Pagina de autentificare (pop-up window)
-                 1. Fetch-uesc date
-                 2. Verific baza de date privind datele de autentificare cu tot ce inseamna exceptions
-                 3. Returnez pagina principala in partea main cu utimele retete postate
-                 4. De implemetat sectiune adauga retetele mele
-                  to be continued
-             -->
+            <a class="item_login" href="autentificare/autentificare.php">Autentificare</a>
+            <a class="item_login" href="inregistrare/inregistrare.php">Inregistrare</a>
         </div>
+    </div>
 
 </header>
 <!-- sfarsit structura repetitiva -->
-<div class="nav-bar">
-    <div class="nav-bar-items">
+<div class="nav_bar">
+    <div class="nav_bar_items">
         <ul >
             <li><a class="item" href="./sosuri.html">Sosuri</a></li>
             <li><a class="item" href="#">Semipreparate</a></li>
@@ -72,27 +56,15 @@ login/sign up -->
 </div>
 
 
-<main class="main-section">
-    <div class="food-images auto">
+<main class="main_section">
+    <div class="food_images auto">
         <!-- aici trebuie lucrat la view:
         -adaugat owner-ul, 5-6 imagini/ reteta/ display etc 19.10.2020-->
-        <img class="food-image food-image-display-block" src="images/friptura_de_porc_1.jpg" alt="friptura_de_porc"/>
-        <img class="food-image food-image-display-none" src="images/friptura_de_porc_2.jpg" alt="friptura_de_porc"/>
 
-        <i class="left-button left-button-float fas fa-arrow-circle-left"></i>
-        <i class="right-button right-button-float fas fa-arrow-circle-right"></i>
     </div>
 </main>
-<!-- structura repetitiva pe mai multe pagini - index
-login/sign up -->
-<footer>
-    <div class="footer">
-        <p>&copy 2020-2021 The owners of this application are Ion and Mihai Donescu</p>
-    </div>
-</footer>
-<!-- sfarsit structura repetitiva -->
-
-<!--<script type="text/javascript" src="./js/start.js"></script>-->
-
+<?php
+include("footer.html");
+?>
 </body>
 </html>

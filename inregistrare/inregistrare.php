@@ -1,6 +1,6 @@
 <?php
 session_start();
-include ("../connect.php");
+include("../conectare.php");
 /**
  * salvam in baza de date data la care se inregistreaza noul utilizator
  */
@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
     $raspunsInterogare = mysqli_fetch_assoc($interogare);
     //var_dump($raspunsInterogare);
 
-    //echo $nume."<br/>".$prenume."<br/>".$email."<br/>".$parola."<br/>".$confirmaParola."<br/>".$avatar."<br/>".$avatarSize."<br/>".$data;
+    //echo $nume."<br/>".$prenume."<br/>".$email."<br/>".$parola."<br/>".$confirmaParola."<br/>".$poza_profil."<br/>".$avatarSize."<br/>".$data;
     if (strlen($nume) < 2) {
         $raspuns = "Nume prea scurt";
     } else if (strlen($prenume) < 2) {
@@ -56,7 +56,7 @@ if (isset($_POST['submit'])) {
             $avatarExtention = $avatarExt[1];
             //Verificam daca avatarul are extensia png sau jpg
             if (strtoupper($avatarExtention) == "PNG" || strtoupper($avatarExtention) == "JPG") {
-                //generam nume unic pentru avatar
+                //generam nume unic pentru poza_profil
                 $avatar = rand(0, 10000) . time() . "." . $avatarExtention;
 
                 //$raspuns = "Inregistare cu succes";
@@ -67,7 +67,7 @@ if (isset($_POST['submit'])) {
 
                 if (!empty($connect)) {
                     if (mysqli_query($connect, $insertQuery)) {
-                        if (move_uploaded_file($tmp_avatar, "../images/users/$avatar")) {
+                        if (move_uploaded_file($tmp_avatar, "../users/images/poza_profil/$avatar")) {
                             $raspuns = "Inregistrare cu succes";
                         } else {
                             $raspuns = "Serverul nu suporta avatarul.<br/> Alegeti alta poza de profil";
@@ -102,8 +102,8 @@ if (isset($_POST['submit'])) {
                 $_SESSION['prenume'] = $prenume;
                 $_SESSION['id'] = $id;
                 $_SESSION['avatar'] = $avatar;
-                var_dump($_SESSION['loggedin']);
-                header("location:../home.php");
+                //var_dump($_SESSION['loggedin']);
+                header("location:../users/user_home_page.php");
 
             } else {
                 $raspuns = "Aceasta adresa de email deja exista";
@@ -118,13 +118,26 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-
     <title>Inregistrare</title>
     <link rel="stylesheet" href="css/inregistrare.css"/>
 </head>
 
 
 <body>
+<header id="header">
+    <div class="header_inner">
+        <div class="gif">
+            <img class="header_gif" src="../fire.gif" alt="fire">
+        </div>
+        <div class="page_title">
+            <h1>Carnețelul de rețete culinare</h1>
+        </div>
+        <div class="login_section login">
+            <a class="item_login item_login_hover" href="../autentificare/autentificare.php">Autentificare</a>
+            <p class="item_login text_color">Inregistrare</p>
+        </div>
+    </div>
+</header>
 
 <div id="wrapper">
     <h3 id="title">Bine ai venit  pe <br/> myrecipesnotebook.com</h3>
@@ -135,38 +148,35 @@ if (isset($_POST['submit'])) {
 
             <label>
                 Nume:<br/>
-                <input type="text" name="nume" class="inputFields"  required/>
+                <input type="text" name="nume" class="input_fields"  required/>
             </label><br/><br/>
 
             <label>
                 Prenume:<br/>
-                <input type="text" name="prenume" class="inputFields" required/>
+                <input type="text" name="prenume" class="input_fields" required/>
             </label><br/><br/>
 
             <label>
                 Email:<br/>
-                <input type="text" name="email" class="inputFields" required/>
+                <input type="text" name="email" class="input_fields" required/>
             </label><br/><br/>
 
             <label>
                 Parola:<br/>
-                <input type="password" name="parola" class="inputFields" required/>
+                <input type="password" name="parola" class="input_fields" required/>
             </label><br/><br/>
 
             <label>
                 Reintroduceti parola:<br/>
-                <input type="password" name="confirmaParola" class="inputFields" required/>
+                <input type="password" name="confirmaParola" class="input_fields" required/>
             </label><br/><br/>
 
             <label>
-                Seteaza imaginea de profil:<br/><br/>
+                Alege o imaginea de profil:<br/>
                 <input type="file" id="avatar" name="imageupload"/>
             </label><br/><br/>
 
-            <input type="checkbox" name="conditions"/>
-            <label>Sunt de acord cu termenii si conditiile<a href="#"><br/><sup>Termenii si conditiile</sup></a></label><br/><br/>
-
-            <input  id="trimite" type="submit" class="theButtons" name="submit" value="Trimite"/>
+            <input  id="trimite" type="submit" class="the_buttons" name="submit" value="Submit"/>
 
         </form>
 
@@ -179,6 +189,11 @@ if (isset($_POST['submit'])) {
 </div>
 <!--2020.12.01 De stilizat form-ul de inregistrare si adaugat butonul Renunta.
 La click se revine la pagina index.php -->
+<footer>
+    <div class="footer">
+        <p>&copy 2020-2021 Dezvoltarea Aplicațiilor Web - FMI - Ion Donescu</p>
+    </div>
+</footer>
 
 </body>
 </html>

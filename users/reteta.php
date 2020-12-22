@@ -40,100 +40,187 @@ if (!isset($_SESSION['loggedin'])) {
         </div>
     </div>
 </header>
-<p class="item_login auto"><?= $_SESSION['prenume'] ?>, completează toate câmpurile obligatorii<sup
+<p class="item_login auto"><?= $_SESSION['prenume'] ?>,<br/> completează toate câmpurile obligatorii<sup
             style="color: red">*</sup> de mai jos pentru noua rețetă</p>
-<div class="reteta">
-    <form method="POST" action="reteta.php" enctype="multipart/form-data">
+<div class="pagina_reteta">
+    <div class="reteta">
+        <form method="POST" action="reteta.php" enctype="multipart/form-data">
 
-        <label>
-            <b>Titlu:</b><sup style="color: red">*</sup><br/>
-            <input type="text" name="titlu" class="inputFields" required/>
-        </label><br/><br/>
+            <label>
+                <b>Titlu:</b><sup style="color: red">*</sup><br/>
+                <input type="text" name="titlu" class="inputFields" required/>
+            </label><br/><br/>
 
-        <label>
-            <b>Categoria:</b><sup style="color: red">*</sup><br/>
-            <input type="radio" id="sosuri" name="categoria" value="sosuri">
-            <label for="sosuri">Sosuri</label><br>
+            <label>
+                <b>Categoria:</b><sup style="color: red">*</sup><br/>
+                <input type="radio" id="sosuri" name="categoria" value="sosuri">
+                <label for="sosuri">Sosuri</label><br>
 
-            <input type="radio" id="semipretarate" name="categoria" value="semipreparate">
-            <label for="semipreparate">Semipreparate</label><br>
+                <input type="radio" id="semipretarate" name="categoria" value="semipreparate">
+                <label for="semipreparate">Semipreparate</label><br>
 
-            <input type="radio" id="gustari" name="categoria" value="gustari">
-            <label for="gustari">Gustări</label><br>
+                <input type="radio" id="gustari" name="categoria" value="gustari">
+                <label for="gustari">Gustări</label><br>
 
-            <input type="radio" id="supe" name="categoria" value="supe">
-            <label for="supe">Supe, ciorbe și borșuri</label><br>
+                <input type="radio" id="supe" name="categoria" value="supe">
+                <label for="supe">Supe, ciorbe și borșuri</label><br>
 
-            <input type="radio" id="mancaruri" name="categoria" value="mancaruri">
-            <label for="mancaruri">Mâncăruri</label><br>
+                <input type="radio" id="mancaruri" name="categoria" value="mancaruri">
+                <label for="mancaruri">Mâncăruri</label><br>
 
-            <input type="radio" id="fripturi" name="categoria" value="fripturi">
-            <label for="fripturi">Fripturi și garnituri</label><br>
+                <input type="radio" id="fripturi" name="categoria" value="fripturi">
+                <label for="fripturi">Fripturi și garnituri</label><br>
 
-            <input type="radio" id="salate" name="categoria" value="salate">
-            <label for="salate">Salate</label><br>
+                <input type="radio" id="salate" name="categoria" value="salate">
+                <label for="salate">Salate</label><br>
 
-            <input type="radio" id="vanat" name="categoria" value="vanat">
-            <label for="vanat">Preparate din vânat</label><br>
+                <input type="radio" id="vanat" name="categoria" value="vanat">
+                <label for="vanat">Preparate din vânat</label><br>
 
-            <input type="radio" id="dulciuri" name="categoria" value="dulciuri">
-            <label for="dulciuri">Dulciuri</label><br>
+                <input type="radio" id="dulciuri" name="categoria" value="dulciuri">
+                <label for="dulciuri">Dulciuri</label><br>
 
-        </label><br/>
+            </label><br/>
 
-        <label>
-            <b>Numărul de porții:</b><sup style="color: red">*</sup><br/>
-            <input type="text" name="nrPortii" class="inputFields" required/>
-        </label><br/><br/>
+            <label>
+                <b>Numărul de porții:</b><sup style="color: red">*</sup><br/>
 
-        <label id="materiiPrime">
-            <b>Materii prime:</b><sup style="color: red">*</sup><br/>
-            <input type="text" name="materiiPrime" class="input_fields" required/>
-            <!-- de facut tabel cu posibilitatea de a adauga materii prime in js -->
+                <select id="portii" name="portii" required/>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                </select>
 
-        </label><br/><br/>
-        <!-- on focus remove text -->
-        <label for="pregatire">
-            <b>Operații pregătitoare:</b><sup style="color: red">*</sup><br/>
-            <textarea id="pregatire" name="pregatire" rows="4" cols="50">Scrie aici operațiile dinaintea preparării
+            </label><br/><br/>
+
+            <label>
+                <b>Materii prime:</b><sup style="color: red">*</sup><br/>
+
+                <table id="materiiPrime">
+                    <thead>
+                    <th>Materie primă</th>
+                    <th>U/M</th>
+                    <th>Cantitatea brută pentru numărul de porții</th>
+                    <th>Observații</th>
+                    <th> Șterge</th>
+                    </thead>
+                    <tbody id="rows">
+                    <tr class="row">
+                        <td>
+                            <input type="text" name="materiePrima" required/>
+                        </td>
+                        <td>
+                            <select id="um" name="um">
+                                <option value="kg">kg</option>
+                                <option value="g">g</option>
+                                <option value="l">l</option>
+                                <option value="ml">ml</option>
+                                <option value="lingura">lingură</option>
+                                <option value="lingurita">linguriță</option>
+                                <option value="cana">cană</option>
+                                <option value="ceasca">ceașcă</option>
+                                <option value="buc">buc</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="cantitate" required/>
+                        </td>
+                        <td>
+                            <input type="text" name="observatii">
+                        </td>
+                        <td>
+                            <div class="minus">
+                                <i class="fas fa-minus-circle" onclick="stergeMateriePrima(this)"></i>
+                            </div>
+                        </td>
+
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+                <!-- de facut tabel cu posibilitatea de a adauga materii prime in js -->
+
+            </label>
+            <div style="display: flex">
+                <p style="padding-top: 3px">Adaugă materie primă</p>
+                <div class="plus"><i class="fas fa-plus-circle"></i></div>
+                <br/>
+            </div>
+            <!-- on focus remove text -->
+            <label for="pregatire">
+                <b>Operații pregătitoare:</b><sup style="color: red">*</sup><br/>
+                <textarea id="pregatire" name="pregatire" rows="4" cols="50">Scrie aici operațiile dinaintea preparării
         </textarea>
-        </label><br/><br/>
-        <!-- on focus remove text -->
-        <label for="preparare">
-            <b>Tehnica preparării:</b><sup style="color: red">*</sup><br/>
-            <textarea id="preparare" name="preparare" rows="4" cols="50">Scrie aici modul de preparare
+            </label><br/><br/>
+            <!-- on focus remove text -->
+            <label for="preparare">
+                <b>Tehnica preparării:</b><sup style="color: red">*</sup><br/>
+                <textarea id="preparare" name="preparare" rows="4" cols="50">Scrie aici modul de preparare
         </textarea>
-        </label><br/><br/>
-        <!-- on focus remove text -->
-        <label for="servire">
-            <b>Prezentare și servire:</b><sup style="color: red">*</sup><br/>
-            <textarea id="servire" name="servire" rows="4" cols="50"
-                      placeholder="Scrie aici modul de prezentare, servire, garituri recomandate etc">
+            </label><br/><br/>
+            <!-- on focus remove text -->
+            <label for="servire">
+                <b>Prezentare și servire:</b><sup style="color: red">*</sup><br/>
+                <textarea id="servire" name="servire" rows="4" cols="50"
+                          placeholder="Scrie aici modul de prezentare, servire, garituri recomandate etc">
         </textarea>
-        </label><br/><br/>
+            </label><br/><br/>
 
-        <label>
-            Adaugă fotografii:<br/>
-            <!-- a se completa in js name  si posibilitatea de a adauga mai multe poze -->
-            <input type="file" id="fotografii" name=""/>
-        </label><br/><br/>
-        <label>
-            <b>Dorești ca rețeta să fie văzută și de alții?</b><sup style="color: red">*</sup><br/>
-            <input type="radio" id="da" name="vazuta" value="da">
-            <label for="da">Da</label><br>
+            Adaugă fotografii (opțional):<br/>
+            <table id="fotografii">
+                <tr>
+                    <td>
+                        <input type="file" class="fotografie" name="foto"/>
+                    </td>
+                    <td>
+                        <div class="minus">
+                            <i class="fas fa-minus-circle" onclick="stergeFotografie(this)"></i>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-            <input type="radio" id="nu" name="vazuta" value="nu">
-            <label for="nu">Nu</label><br>
-        </label> <br/>
 
-        <input type="submit" value="Submit">
+            <div id="schimbaClasa" class="visible" style="display: flex">
+                <p style="padding-top: 3px">Adaugă fotografie</p>
+                <div class="plus"><i class="fas fa-plus-circle"></i></div>
+            </div>
+            <br/>
+            <label>
+                <b>Dorești ca rețeta să fie văzută și de alții?</b><sup style="color: red">*</sup><br/>
+                <input type="radio" id="da" name="vazuta" value="da">
+                <label for="da">Da</label><br>
 
-    </form>
+                <input type="radio" id="nu" name="vazuta" value="nu">
+                <label for="nu">Nu</label><br>
+            </label> <br/>
+
+            <!-- 20.12.2020 de scris cod pe partea de client pt previzualizare rețetă -->
+
+            <button>Previzualizeză</button>
+            <input type="submit" value="Salvează rețeta">
+
+        </form>
+    </div>
+    <div class="previzualizare">
+
+    </div>
+
 </div>
+
 <footer>
     <div class="footer">
         <p>&copy 2020-2021 Dezvoltarea Aplicațiilor Web - FMI - Ion Donescu</p>
     </div>
 </footer>
+<script src="materiePrima.js"></script>
 </body>
 

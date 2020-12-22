@@ -124,9 +124,61 @@ ul li{
     margin: 0 auto;
     border-style: solid;
     border-color:lightblue;
+    text-align: center;
+}
+.pagina_reteta{
+    display: flex;
 }
 .reteta{
     padding: 25px;
+    width:60%;
+}
+.previzualizare{
+    width: 40%;
+    border:1px solid black;
+    height: 100%;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    padding: 5px;
+}
+th {
+    text-align: left;
+}
+.plus{
+    width:30px;
+    height: 30px;
+    padding: 5px;
+
+}
+.plus:hover{
+    cursor: pointer;
+}
+.minus{
+
+    padding: 10px;
+
+}
+.minus:hover{
+    cursor: pointer;
+}
+.fotos{
+    max-width: 150px;
+}
+.fotografie{
+    display: grid;
+    padding: 3px;
+
+}
+.visible{
+    visibility: visible;
+}
+.hidden{
+    visibility: hidden;
 }
 .left_button{
     width: 40px;
@@ -153,7 +205,7 @@ ul li{
 }
 footer{
     bottom: 0;
-    position: fixed;
+    position:fixed;
     width: 100%;
 }
 .footer{

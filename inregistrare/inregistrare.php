@@ -16,9 +16,8 @@ if (isset($_POST['submit'])) {
     }
     $parola = $_POST['parola'];
     $confirmaParola = $_POST['confirmaParola'];
-    $avatar = $_FILES['imageupload']['name'];
-    $tmp_avatar = $_FILES['imageupload']['tmp_name'];
-    $avatarSize = $_FILES['imageupload']['size'];
+
+
     $today = date("F j, Y, g:i a");// data la care se inregistreaza userul
     //fetch-uim intr-un array date introduse
     $interogare = mysqli_query($connect, "SELECT email FROM users WHERE email = '$email'");
@@ -28,32 +27,45 @@ if (isset($_POST['submit'])) {
     //echo $nume."<br/>".$prenume."<br/>".$email."<br/>".$parola."<br/>".$confirmaParola."<br/>".$poza_profil."<br/>".$avatarSize."<br/>".$data;
     if (strlen($nume) < 2) {
         $raspuns = "Nume prea scurt";
-    } else if (strlen($prenume) < 2) {
+    };
+
+    if (strlen($prenume) < 2) {
         $raspuns = "Prenume prea scurt";
-    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    };
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $raspuns = "Introduceti o adresa de email valida";
-    } //2020.12.01 de implementat validare format email
-    else if (strlen($parola) < 6) {
+    } else if (strlen($parola) < 6) {
         $raspuns = "Parola trebuie sa aibe cel putin 6 caractere";
     } else if ($parola !== $confirmaParola) {
         $raspuns = "Parolele nu se potrivesc";
-    } // se poate implementa si fara poza de profil, dar e mai cool
-    else if ($avatar == "") {
-        $raspuns = "Va rugam sa incarcati o poza de profil";
-    }
-    //poza de profil nu poate sa fie mai mare de 1 MB
-    //atentie si la setarile phpmyadmin
-    else if ($avatarSize > 1048576 || $avatarSize == 0) {
-        $raspuns = "Poza de profil nu poate fi mai mare de 1MB ";
-    } else {
-        //daca nu exista inregistrata adresa de mail
-        if (empty($raspunsInterogare['email'])) {
+    };
 
-            //criptare parola cu functia md5
-            $parola = md5($parola);
-            // Verificam extensia avatarului, de implementat exceptia daca in denumire contine "."
+    // se poate implementa si fara poza de profil, dar e mai cool
+//    else if ($avatar == "") {
+//        $raspuns = "Va rugam sa incarcati o poza de profil";
+//    }
+    if ($_FILES['imageupload']['name'] == "") {
+        $avatar = "chef.png";
+    } else {
+        $avatar = $_FILES['imageupload']['name'];
+        $tmp_avatar = $_FILES['imageupload']['tmp_name'];
+        $avatarSize = $_FILES['imageupload']['size'];
+        //poza de profil nu poate sa fie mai mare de 1 MB
+        //atentie si la setarile phpmyadmin
+        if ($avatarSize > 1048576) {
+            $raspuns = "Poza de profil nu poate fi mai mare de 1MB ";
+        };
+    }
+    //daca nu exista inregistrata adresa de mail
+    if (empty($raspunsInterogare['email'])) {
+        //criptare parola cu functia md5
+        $parola = md5($parola);
+        // Verificam extensia avatarului, de implementat exceptia daca in denumire contine "."
+        if ($avatar !== "chef.png") {
             $avatarExt = explode(".", $avatar);
             $avatarExtention = $avatarExt[1];
+
             //Verificam daca avatarul are extensia png sau jpg
             if (strtoupper($avatarExtention) == "PNG" || strtoupper($avatarExtention) == "JPG") {
                 //generam nume unic pentru poza_profil
@@ -78,8 +90,15 @@ if (isset($_POST['submit'])) {
             } else {
                 $raspuns = "Avatarul trebuie sa fie imagine cu extensia png sau jpg";
             }
-            if ($stmt = $connect->prepare('SELECT id,nume,prenume,email,parola,avatar FROM users WHERE email = ?')) {
+        } else {
+            $insertQuery = "INSERT INTO users (nume,prenume,email,parola,avatar,date) VALUES ('$nume','$prenume','$email','$parola','chef.png','$today')";
+            if (!empty($connect)) {
+                mysqli_query($connect, $insertQuery);
+            }
+        }
 
+            if ($stmt = $connect->prepare('SELECT id,nume,prenume,email,parola,avatar FROM users WHERE email = ?')) {
+                echo "prepare";
                 $stmt->bind_param('s', $_POST['email']);
                 $stmt->execute();
 
@@ -110,9 +129,9 @@ if (isset($_POST['submit'])) {
             }
             $stmt->close();
         }
-        //
-    }
+
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -172,8 +191,8 @@ if (isset($_POST['submit'])) {
             </label><br/><br/>
 
             <label>
-                Alege o imaginea de profil:<br/>
-                <input type="file" id="avatar" name="imageupload"/>
+                Alege o imaginea de profil(optional):<br/>
+                <input type="file" id="avatar" name="imageupload" />
             </label><br/><br/>
 
             <input  id="trimite" type="submit" class="the_buttons" name="submit" value="Submit"/>

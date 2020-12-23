@@ -54,7 +54,7 @@ if (!isset($_SESSION['loggedin'])) {
 
 
 <main class="main_section">
-    <h2 class="title_main">Rețelele mele</h2>
+    <h2 class="title_main">Rețetele mele</h2>
     <div class="food_images auto">
         <!-- Adaugă rețetă noua 18.12.2020 -->
         <!-- de stilizat mai frumos -->

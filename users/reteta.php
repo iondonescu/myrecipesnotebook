@@ -8,6 +8,23 @@ if (!isset($_SESSION['loggedin'])) {
     exit;
 }
 
+/*
+ * salvam datele din reteta
+ */
+
+if (isset($_POST['submit'])) {
+//mysqli_real_escape_string - function that avoid mysqli injection with malicious code
+    if (isset($connect)) {
+        $nume = mysqli_real_escape_string($connect, $_POST['nume']);
+        $prenume = mysqli_real_escape_string($connect, $_POST['prenume']);
+        $email = mysqli_real_escape_string($connect, $_POST['email']);
+    }
+    $parola = $_POST['parola'];
+    $confirmaParola = $_POST['confirmaParola'];
+
+
+    $today = date("F j, Y, g:i a");// data la care se inregistreaza userul
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +35,7 @@ if (!isset($_SESSION['loggedin'])) {
     <!-- A se adauga meta tag-uri -->
     <title>Carnețelul</title>
     <link rel="stylesheet" href="styles_home.css">
-    <link rel='icon' href='../users/favicon.ico' type='image/x-icon'>
+    <link rel='icon' href='../favicon.ico' type='image/x-icon'>
     <script src="https://kit.fontawesome.com/c9f2ec41c3.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>

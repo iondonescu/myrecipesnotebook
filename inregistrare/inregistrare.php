@@ -41,10 +41,10 @@ if (isset($_POST['submit'])) {
         $raspuns = "Parolele nu se potrivesc";
     };
 
-    // se poate implementa si fara poza de profil, dar e mai cool
-//    else if ($avatar == "") {
-//        $raspuns = "Va rugam sa incarcati o poza de profil";
-//    }
+/*
+ * Opțional introducem o poză de profil
+ * Dacă nu introducem este utilizată una generică
+ */
     if ($_FILES['imageupload']['name'] == "") {
         $avatar = "chef.png";
     } else {
@@ -121,14 +121,16 @@ if (isset($_POST['submit'])) {
                 $_SESSION['prenume'] = $prenume;
                 $_SESSION['id'] = $id;
                 $_SESSION['avatar'] = $avatar;
+                $_SESSION['email'] = $email;
                 //var_dump($_SESSION['loggedin']);
+                mkdir("../users/".$_SESSION['email']);
                 header("location:../users/user_home_page.php");
 
-            } else {
-                $raspuns = "Aceasta adresa de email deja exista";
             }
             $stmt->close();
-        }
+        }else {
+        $raspuns = "Aceasta adresa de email deja exista.Reîncercați sau autentificați-vă!";
+    }
 
 }
 

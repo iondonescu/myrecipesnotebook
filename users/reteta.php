@@ -3,8 +3,6 @@
 session_start();
 // If the poza_profil is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
-    //var_dump($_SESSION['nume']);
-    //header('Location: index.php');
     exit;
 }
 
@@ -13,17 +11,127 @@ if (!isset($_SESSION['loggedin'])) {
  */
 
 if (isset($_POST['submit'])) {
-//mysqli_real_escape_string - function that avoid mysqli injection with malicious code
-    if (isset($connect)) {
-        $nume = mysqli_real_escape_string($connect, $_POST['nume']);
-        $prenume = mysqli_real_escape_string($connect, $_POST['prenume']);
-        $email = mysqli_real_escape_string($connect, $_POST['email']);
+
+    /*
+     * Generăm un cod unic pentru retetă
+     * Ne ajută să asociem tabelul rețeta cu tabelele materiile prime și fotografii
+     */
+    $codReteta = "reteta".rand(0, 10000) . time();
+    //var_dump($codReteta);
+    $titlu = $_POST['titlu'];
+    //var_dump($titlu);
+    $categoria =$_POST['categoria'];
+    //var_dump($categoria);
+    $portii = $_POST['portii'];
+    //var_dump($portii);
+
+   /*
+    * materiile prime trebuiesc adăugate într-un tabel "materiiPrime"
+    * și asociate cu rețeta
+    */
+
+    //aici ar trebui 4 siruri
+    $materiePrima = $_POST['materiePrima'];
+//    foreach ($materiePrima as $mPrima) {
+//        echo '<br/>';
+//        var_dump($mPrima);
+//    }
+//    echo '<br/>';
+    $um = $_POST['um'];
+//    foreach ($um as $mPrimaUm) {
+//        echo '<br/>';
+//        var_dump($mPrimaUm);
+//    }
+//
+//    echo '<br/>';
+    $cantitate = $_POST['cantitate'];
+//    foreach ($cantitate as $mPrimaCantitate) {
+//        echo '<br/>';
+//        var_dump($mPrimaCantitate);
+//    }
+//    echo '<br/>';
+    $observatii = $_POST['observatii'];
+//    foreach ($observatii as $mPrimaObservatii) {
+//        echo '<br/>';
+//        var_dump($mPrimaObservatii);
+//    }
+
+    /*
+     * Creăm un director denumirea adresa de email(unica)
+     * și identificabila in care stocam date referitoare la rețetă
+     */
+
+    $userPath = $_SESSION['email']."/";
+    mkdir($userPath.$codReteta);
+    $retetaPath = $userPath.$codReteta."/";
+
+    //de adăugat în acest director pozele
+    /*
+     * Creăm un fișier txt cu nume unic,
+     * in care vom stoca informațiile despre oprerațiile de pregătire
+     */
+    $pregatire = $_POST['pregatire'];
+    $pregatireText ="pregatire_".$codReteta.".txt";
+    $filePregatire = fopen($retetaPath.$pregatireText,"w")or die("Unable to open file");
+    fwrite($filePregatire,$pregatire);
+    fclose($filePregatire);
+    /*
+     * Creăm un fișier txt cu nume unic,
+     * in care vom stoca informațiile despre oprerațiile de preparare
+     */
+    $preparare = $_POST['preparare'];
+    $preparareText ="preparare_".$codReteta.".txt";
+    $filePreparare = fopen($retetaPath.$preparareText,"w")or die("Unable to open file");
+    fwrite($filePreparare,$preparare);
+    fclose($filePreparare);
+
+    /*
+     * Creăm un fișier txt cu nume unic,
+     * in care vom stoca informațiile despre servire
+     */
+    $servire = $_POST['servire'];
+    $servireText ="servire_".$codReteta.".txt";
+    //var_dump($pregatireText);
+    $fileServire = fopen($retetaPath.$servireText,"w")or die("Unable to open file");
+    fwrite($fileServire,$servire);
+    fclose($fileServire);
+
+    $foto = $_FILES['foto'];
+//    foreach ($foto as $retetaFoto) {
+//        echo '<br/>';
+//        var_dump($retetaFoto);
+//    }
+//    echo '<br/>';
+
+    /*
+     *de implementat in js daca fotografiile sunt
+     * mai mari de 2MB sau daca sunt jpg sau png
+     */
+
+
+    /*
+     * Daca nu au fost incarcate fotografii
+     * incarca in baza de date valuarea NULL
+     */
+    $foto = $_FILES['foto']['name'];
+    $tmp_foto = $_FILES['foto']['tmp_name'];
+    mkdir($retetaPath."foto");
+    $numberOfPhoto = count($tmp_foto);
+    for($i=0;$i<$numberOfPhoto;$i++){
+        move_uploaded_file($tmp_foto[$i],"$retetaPath/foto/$foto[$i]");
     }
-    $parola = $_POST['parola'];
-    $confirmaParola = $_POST['confirmaParola'];
+    /*
+     * variabila pt a stabili dacă rețeta va fi făcută publica
+     * in pagina principala (fără a fi autentificat)
+     */
+    $visibila = $_POST['visibila'];
+    //var_dump($visibila);
 
-
-    $today = date("F j, Y, g:i a");// data la care se inregistreaza userul
+//    /*
+//     * data la care este creată rețeta
+//     * necesară la UI-ul user_home_page
+//     */
+    $dataReteta= date("F j, Y, g:i a");
 }
 ?>
 <!DOCTYPE html>
@@ -65,7 +173,7 @@ if (isset($_POST['submit'])) {
 
             <label>
                 <b>Titlu:</b><sup style="color: red">*</sup><br/>
-                <input type="text" name="titlu" class="inputFields" required/>
+                <input type="text" name="titlu" class="inputFields" /> <!--required-->
             </label><br/><br/>
 
             <label>
@@ -73,7 +181,7 @@ if (isset($_POST['submit'])) {
                 <input type="radio" id="sosuri" name="categoria" value="sosuri">
                 <label for="sosuri">Sosuri</label><br>
 
-                <input type="radio" id="semipretarate" name="categoria" value="semipreparate">
+                <input type="radio" id="semipreparate" name="categoria" value="semipreparate">
                 <label for="semipreparate">Semipreparate</label><br>
 
                 <input type="radio" id="gustari" name="categoria" value="gustari">
@@ -102,7 +210,7 @@ if (isset($_POST['submit'])) {
             <label>
                 <b>Numărul de porții:</b><sup style="color: red">*</sup><br/>
 
-                <select id="portii" name="portii" required/>
+                <select id="portii" name="portii" /> <!--required-->
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -124,17 +232,17 @@ if (isset($_POST['submit'])) {
                     <thead>
                     <th>Materie primă</th>
                     <th>U/M</th>
-                    <th>Cantitatea brută pentru numărul de porții</th>
+                    <th>Cantitate</th>
                     <th>Observații</th>
                     <th> Șterge</th>
                     </thead>
                     <tbody id="rows">
                     <tr class="row">
                         <td>
-                            <input type="text" name="materiePrima" required/>
+                            <input type="text" name="materiePrima[]" /> <!--required-->
                         </td>
                         <td>
-                            <select id="um" name="um">
+                            <select id="um" name="um[]">
                                 <option value="kg">kg</option>
                                 <option value="g">g</option>
                                 <option value="l">l</option>
@@ -147,10 +255,10 @@ if (isset($_POST['submit'])) {
                             </select>
                         </td>
                         <td>
-                            <input type="text" name="cantitate" required/>
+                            <input type="text" name="cantitate[]" /> <!--required-->
                         </td>
                         <td>
-                            <input type="text" name="observatii">
+                            <input type="text" name="observatii[]">
                         </td>
                         <td>
                             <div class="minus">
@@ -195,7 +303,7 @@ if (isset($_POST['submit'])) {
             <table id="fotografii">
                 <tr>
                     <td>
-                        <input type="file" class="fotografie" name="foto"/>
+                        <input type="file" class="fotografie" name="foto[]"/>
                     </td>
                     <td>
                         <div class="minus">
@@ -212,25 +320,26 @@ if (isset($_POST['submit'])) {
             </div>
             <br/>
             <label>
-                <b>Dorești ca rețeta să fie văzută și de alții?</b><sup style="color: red">*</sup><br/>
-                <input type="radio" id="da" name="vazuta" value="da">
+                <b>Dorești ca rețeta să fie văzută și de alții?</b><sup style="color: red">*</sup><br/> <!--required-->
+                <input type="radio" id="da" name="visibila" value="da">
                 <label for="da">Da</label><br>
 
-                <input type="radio" id="nu" name="vazuta" value="nu">
+                <input type="radio" id="nu" name="visibila" value="nu">
                 <label for="nu">Nu</label><br>
             </label> <br/>
 
             <!-- 20.12.2020 de scris cod pe partea de client pt previzualizare rețetă -->
 
             <button>Previzualizeză</button>
-            <input type="submit" value="Salvează rețeta">
+            <input type="submit" name = "submit" value="Salvează rețeta">
 
         </form>
     </div>
+    <!-- 23.12.2020 de implementat pe viitor
     <div class="previzualizare">
 
     </div>
-
+    -->
 </div>
 
 <footer>

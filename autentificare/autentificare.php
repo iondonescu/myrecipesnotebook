@@ -45,6 +45,7 @@ if (isset($_POST['submit'])) {
                         $_SESSION['prenume'] = $prenume;
                         $_SESSION['id'] = $id;
                         $_SESSION['avatar'] = $avatar;
+                        $_SESSION['email'] = $email;
                         // redirectioneaza catre pagina utilizatorului
                         header('Location: ../users/user_home_page.php');
                     }

@@ -133,6 +133,10 @@ ul li{
     padding: 25px;
     width:60%;
 }
+
+#pregatire, #preparare, #servire,#fotografii{
+    width:667px;
+}
 .previzualizare{
     width: 40%;
     border:1px solid black;
@@ -142,6 +146,7 @@ table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
     width: 100%;
+
 }
 th, td {
     padding: 5px;

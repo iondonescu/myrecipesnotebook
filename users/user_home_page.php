@@ -24,12 +24,12 @@ if (!isset($_SESSION['loggedin'])) {
             <img class="header_gif" src="../fire.gif" alt="fire">
         </div>
         <div class="page_title">
-            <h1>Carnețelul de rețete culinare</h1>
+            <h1>Carnețelul meu de rețete culinare</h1>
         </div>
         <div class="login_section login">
-            <p class="item_login">Salut, <?=$_SESSION['prenume']?>!</p>
             <img class="profile_image" src="images/poza_profil/<?=$_SESSION['avatar']?>"  alt="imagine de profil">
-            <a class="item_login item_login_hover" href="../deconectare.php">La revedere!</a>
+            <p class="item_login">Salut, <?=$_SESSION['prenume']?>!</p>
+            <a class="item_login item_login_hover" href="../deconectare.php">Deconectează-mă!</a>
         </div>
 </header>
 

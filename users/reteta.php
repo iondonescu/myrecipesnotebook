@@ -5,6 +5,8 @@ session_start();
 if (!isset($_SESSION['loggedin'])) {
     exit;
 }
+include("../conectare.php");
+date_default_timezone_set('Europe/Bucharest');
 
 /*
  * salvam datele din reteta
@@ -18,6 +20,12 @@ if (isset($_POST['submit'])) {
      */
     $codReteta = "reteta".rand(0, 10000) . time();
     //var_dump($codReteta);
+    /*
+     * data la care este creată rețeta
+     * necesară la UI-ul user_home_page
+     */
+    $dataReteta= date("F j, Y, g:i a");
+
     $titlu = $_POST['titlu'];
     //var_dump($titlu);
     $categoria =$_POST['categoria'];
@@ -30,7 +38,6 @@ if (isset($_POST['submit'])) {
     * și asociate cu rețeta
     */
 
-    //aici ar trebui 4 siruri
     $materiePrima = $_POST['materiePrima'];
 //    foreach ($materiePrima as $mPrima) {
 //        echo '<br/>';
@@ -55,6 +62,19 @@ if (isset($_POST['submit'])) {
 //        echo '<br/>';
 //        var_dump($mPrimaObservatii);
 //    }
+    /*
+     * Inserare in baza de date in tabelul materii prime informatii despre materii prime :)
+     */
+    $nrMateriiPrime = count($materiePrima);
+    for($i=0;$i<$nrMateriiPrime;$i++) {
+        $insertQueryMateriePrima = "INSERT INTO materiiprime (codReteta,materieprima,um,cantitate,observatii) VALUES ('$codReteta','$materiePrima[$i]','$um[$i]','$cantitate[$i]','$observatii[$i]')";
+        if (!empty($connect)) {
+            mysqli_query($connect, $insertQueryMateriePrima);
+        }
+        else{
+            echo "Something went wrong";
+        }
+    }
 
     /*
      * Creăm un director denumirea adresa de email(unica)
@@ -65,7 +85,6 @@ if (isset($_POST['submit'])) {
     mkdir($userPath.$codReteta);
     $retetaPath = $userPath.$codReteta."/";
 
-    //de adăugat în acest director pozele
     /*
      * Creăm un fișier txt cu nume unic,
      * in care vom stoca informațiile despre oprerațiile de pregătire
@@ -96,7 +115,7 @@ if (isset($_POST['submit'])) {
     fwrite($fileServire,$servire);
     fclose($fileServire);
 
-    $foto = $_FILES['foto'];
+    //$foto = $_FILES['foto'];
 //    foreach ($foto as $retetaFoto) {
 //        echo '<br/>';
 //        var_dump($retetaFoto);
@@ -111,27 +130,75 @@ if (isset($_POST['submit'])) {
 
     /*
      * Daca nu au fost incarcate fotografii
-     * incarca in baza de date valuarea NULL
+     * incarcam o poza generica
      */
-    $foto = $_FILES['foto']['name'];
-    $tmp_foto = $_FILES['foto']['tmp_name'];
+    $fotoName = $_FILES['foto']['name'];
+    var_dump($fotoName);
+    //var_dump($foto);
     mkdir($retetaPath."foto");
+    $tmp_foto = $_FILES['foto']['tmp_name'];
     $numberOfPhoto = count($tmp_foto);
+    //var_dump($numberOfPhoto);
+if($_FILES['foto']['size'][0] !== 0){
     for($i=0;$i<$numberOfPhoto;$i++){
-        move_uploaded_file($tmp_foto[$i],"$retetaPath/foto/$foto[$i]");
+        move_uploaded_file($tmp_foto[$i],"$retetaPath/foto/$fotoName[$i]");
     }
+    }else{
+        echo "nu exista fotografii";
+        copy("chef.png","$retetaPath/foto/chef.png");
+    }
+
     /*
      * variabila pt a stabili dacă rețeta va fi făcută publica
      * in pagina principala (fără a fi autentificat)
      */
-    $visibila = $_POST['visibila'];
+    $vizibila = $_POST['visibila'];
     //var_dump($visibila);
 
-//    /*
-//     * data la care este creată rețeta
-//     * necesară la UI-ul user_home_page
-//     */
-    $dataReteta= date("F j, Y, g:i a");
+    /*
+     * Inserare în baza de date, în tabelul rețetă informațiile despre rețetă
+     */
+    $owner =$_SESSION['email'];
+        $insertQueryReteta = "INSERT INTO reteta (owner,codreteta,titlu,categoria,portii,vizibila,datareteta) VALUES ('$owner','$codReteta','$titlu','$categoria','$portii','$vizibila','$dataReteta')";
+        if (!empty($connect)) {
+            mysqli_query($connect, $insertQueryReteta);
+        }
+        else{
+            echo "Something went wrong";
+        }
+    /*
+     * Inserare în baza de date, în tabelul fotoreteta informațiile despre numele fisierelor
+     */
+
+    $nrFotografii = count($fotoName);
+    /*
+     * verificam daca utilizatorul a atașat fotografii pt rețetă
+     * Dacă da inserăm în baza de date numele fotografiilor lui,
+     * dacă nu inserăm numele fotografiei generice
+     */
+    //var_dump(array_values($nrFotografii));
+    if($_FILES['foto']['size'][0] !== 0){
+        for ($i = 0; $i < $nrFotografii; $i++) {
+            $insertQueryFotografii = "INSERT INTO fotoretete (codreteta,owner,numefotografie) VALUES ('$codReteta','$owner','$fotoName[$i]')";
+            if (!empty($connect)) {
+                mysqli_query($connect, $insertQueryFotografii);
+            } else {
+                echo "Something went wrong";
+            }
+        }
+    }else{
+
+        $insertQueryFotografii = "INSERT INTO fotoretete  (codreteta,owner,numefotografie) VALUES ('$codReteta','$owner','chef.png')";
+        if (!empty($connect)) {
+            mysqli_query($connect, $insertQueryFotografii);
+        } else {
+            echo "Something went wrong";
+        }
+
+    }
+        header("Location:user_home_page.php");
+
+
 }
 ?>
 <!DOCTYPE html>

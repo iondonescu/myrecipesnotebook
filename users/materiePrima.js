@@ -34,8 +34,8 @@ plus1.onclick = function adaugaMaterie() {
 sterge din tabel linie pentru ingredient
  */
 function stergeMateriePrima(r) {
-    let i = r.parentNode.parentNode.rowIndex;
-    tabelMateriiPrime.deleteRow(i);
+    let i = r.parentNode.parentNode.parentNode.rowIndex;
+    tabelMateriiPrime.deleteRow(i-1);
 }
 
 /*
@@ -77,6 +77,8 @@ for(let i=0;i<fotografie.length-1;i++){
     fotografie[i].setAttribute("name","foto"+i);
     alert(fotografie[i]);
 }
+
+//de implementat facilitatea de previzualizare înainte de salvare
 let previzualizareButton = document.getElementsByTagName("button")[0];
 previzualizareButton.onclick = function ataseaza(){
     let previzualizare = document.getElementsByClassName("previzualizare")[0];

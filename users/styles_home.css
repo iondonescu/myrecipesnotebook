@@ -105,7 +105,16 @@ ul li{
     padding: 10px 0;
     font-size:30px;
 }
-
+#retetele_mele{
+    display:inline-flex;
+    flex-wrap: wrap;
+    grid-auto-flow:row;
+}
+.reteta_mea{
+    width: 204px;
+    height: 204px;
+    border-radius: 10px;
+}
 .food_image,.food_images {
     width:250px;
     height: 250px;
@@ -121,10 +130,11 @@ ul li{
 }
 
 .auto{
-    margin: 0 auto;
+    margin: 10px 10px;
     border-style: solid;
     border-color:lightblue;
     text-align: center;
+
 }
 .pagina_reteta{
     display: flex;

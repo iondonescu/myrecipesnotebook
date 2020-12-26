@@ -10,7 +10,7 @@ if (!isset($_SESSION['loggedin'])) {
 include('../conectare.php');
 $owner = $_SESSION['email'];
 if (isset($connect)) {
-    $resultReteta = mysqli_query($connect, "SELECT owner,codreteta,titlu FROM reteta WHERE owner = '$owner'");
+    $resultReteta = mysqli_query($connect, "SELECT owner,codreteta,titlu,datareteta FROM reteta WHERE owner = '$owner' ORDER BY datareteta DESC");
 }
 
 
@@ -20,10 +20,10 @@ if (isset($connect)) {
 <head>
     <meta charset="utf-8">
     <title>Carnetelul</title>
-    <link href="styles_home.css" rel="stylesheet" type="text/css">
+    <link href="styles_home.css" rel="stylesheet" ">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 </head>
-<body>
+<body id="body">
 <header id="header">
     <div class="header_inner">
         <div class="gif">
@@ -95,11 +95,10 @@ if (isset($connect)) {
                     }
                 }
                     echo '<div class="food_images auto">
-                            <h3 class="titlu_reteta" onclick="retineTitlu(this)">' . $row["titlu"] . '</h3>
-                            <a id="reteta" href="#">
-                            <!--Nu-mi pace faza asta cu file[2] -->
+                            <h3 class="titlu_reteta">' . $row["titlu"] . '</h3>
                                 <img class="reteta_mea" src="' . $ownerReteta . '/' . $codReteta . '/foto/' . $file . '">'
-                        . '<p>Vezi rețeta</p></a> </div>';
+                        .'<button class="myBtn" onclick="arataReteta(\''.$codReteta.'\')">Vezi rețeta</button>
+                            </div>';
             }
         }
         ?>
@@ -109,7 +108,7 @@ if (isset($connect)) {
 <?php
 include("../footer.html")
 ?>
-<script src="../retetaMea.js" type="text/javascript"></script>
+<script src="retetaMea.js" ></script>
 </body>
 </html>
 

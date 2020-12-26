@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-// If the poza_profil is not logged in redirect to the login page...
+
 if (!isset($_SESSION['loggedin'])) {
     exit;
 }
@@ -197,8 +197,6 @@ if($_FILES['foto']['size'][0] !== 0){
 
     }
         header("Location:user_home_page.php");
-
-
 }
 ?>
 <!DOCTYPE html>
@@ -338,8 +336,6 @@ if($_FILES['foto']['size'][0] !== 0){
                     </tbody>
 
                 </table>
-                <!-- de facut tabel cu posibilitatea de a adauga materii prime in js -->
-
             </label>
             <div style="display: flex">
                 <p style="padding-top: 3px">Adaugă materie primă</p>
@@ -352,13 +348,13 @@ if($_FILES['foto']['size'][0] !== 0){
                 <textarea id="pregatire" name="pregatire" rows="4" cols="50">Scrie aici operațiile dinaintea preparării
         </textarea>
             </label><br/><br/>
-            <!-- on focus remove text -->
+            <!-- on focus remove text  de implementat-->
             <label for="preparare">
                 <b>Tehnica preparării:</b><sup style="color: red">*</sup><br/>
                 <textarea id="preparare" name="preparare" rows="4" cols="50">Scrie aici modul de preparare
         </textarea>
             </label><br/><br/>
-            <!-- on focus remove text -->
+            <!-- on focus remove text  de implememntat-->
             <label for="servire">
                 <b>Prezentare și servire:</b><sup style="color: red">*</sup><br/>
                 <textarea id="servire" name="servire" rows="4" cols="50"

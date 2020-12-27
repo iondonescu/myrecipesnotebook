@@ -99,6 +99,7 @@ ul li{
 }
 .title{
     text-align: center;
+    padding: 10px;
 }
 .title_main{
     text-align: center;
@@ -109,13 +110,14 @@ ul li{
     display:inline-flex;
     flex-wrap: wrap;
     grid-auto-flow:row;
+    margin:10px;
 }
 .reteta_mea{
     width: 204px;
     height: 204px;
     border-radius: 10px;
 }
-.food_image,.food_images {
+.food_images {
     width:250px;
     height: 250px;
     border-radius: 10px;
@@ -130,7 +132,7 @@ ul li{
 }
 
 .auto{
-    margin: 10px 10px;
+    margin: 20px;
     border-style: solid;
     border-color:lightblue;
     text-align: center;
@@ -230,6 +232,45 @@ footer{
     background: rgb(0, 162, 255);
     color: white;
     text-align: center;
+}
+.reteta_img{
+    width:50%;
+    height: 250px;
+}
+.reteta_imagine{
+    width:350px;
+    height: 250px;
+    position:absolute;
+    border-radius: 20px;
+    z-index: -1;
+}
+.left-button{
+    width: 40px;
+    height: 40px;
+
+    top:50%;
+    margin-top: 100px;
+    left:15px;
+}
+
+.right-button{
+    width: 40px;
+    height: 40px;
+
+    top:50%;
+    margin-top: 100px;
+    /* aici de lucrat ca-i div-ul aiurea*/
+    margin-left:265px;
+    right:15px;
+
+}
+.left-button-float,.right-button-float{
+
+    font-size: 40px;
+}
+.pregatire{
+    position: relative;
+    padding-top: 10px;
 }
 
 

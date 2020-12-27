@@ -1,3 +1,19 @@
+<?php
+session_start();
+// If the poza_profil is not logged in redirect to the login page...
+
+include('conectare.php');
+
+if (isset($connect)) {
+    $resultReteta = mysqli_query($connect, "SELECT owner,codreteta,titlu,datareteta FROM reteta ORDER BY datareteta DESC");
+}
+
+if (isset($connect)) {
+    $resultFoto = mysqli_query($connect, "SELECT codreteta,owner,numefotografie FROM fotoretete ");
+};
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,13 +22,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- A se adauga meta tag-uri -->
     <title>Carnețelul</title>
-    <link rel="stylesheet" href="styles_index.css">
+
+    <link rel="stylesheet" href="users/styles_home.css">
     <link rel='icon' href='favicon.ico' type='image/x-icon'>
-    <script src="https://kit.fontawesome.com/c9f2ec41c3.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 </head>
 
-<body>
+<body id="body">
 <!-- structura repetitiva pe mai multe pagini - index
 login/sign up -->
 <header id="header">
@@ -38,7 +54,7 @@ login/sign up -->
 <!-- sfarsit structura repetitiva -->
 <div class="nav_bar">
     <div class="nav_bar_items">
-        <ul >
+        <ul>
             <li><a class="item" href="./sosuri.html">Sosuri</a></li>
             <li><a class="item" href="#">Semipreparate</a></li>
             <li><a class="item" href="#">Gustări</a></li>
@@ -57,14 +73,41 @@ login/sign up -->
 
 
 <main class="main_section">
-    <div class="food_images auto">
-        <!-- aici trebuie lucrat la view:
-        -adaugat owner-ul, 5-6 imagini/ reteta/ display etc 19.10.2020-->
+    <h2 class="title_main">Rețetele utilizatorilor</h2>
+    <div id="retetele_mele">
+            <?php
+            /*
+             * afiseaza toate rețetele mele
+             */
+            if ($resultReteta->num_rows > 0) {
+                // output data of each row
+                while ($row = $resultReteta->fetch_assoc()) {
+                    $ownerReteta = $row["owner"];
+                    $codReteta = $row["codreteta"];
+                    if (isset($connect)) {
+                        $resultFoto = mysqli_query($connect, "SELECT numefotografie FROM fotoretete WHERE codreteta = '$codReteta'");
+                        if ($resultFoto->num_rows > 0) {
+                            // output data of each row
+                            $rowFoto = $resultFoto->fetch_assoc();
+                            $file = $rowFoto["numefotografie"];
+                            //var_dump($file);
+                        }
+                    }
+                    echo '
+                            <div class="food_images auto">
+                            <h3 class="titlu_reteta">' . $row["titlu"] . '</h3>
+                                <img class="reteta_mea" src="' . 'users/' . $ownerReteta . '/' . $codReteta . '/foto/' . $file . '">'
+                        . '<button class="myBtn" onclick="arataReteta(\'' . $codReteta . '\')">Vezi rețeta</button>
+                            </div>';
+                }
+            }
+            ?>
+        </div>
 
-    </div>
 </main>
 <?php
 include("footer.html");
 ?>
+<script src="reteta.js" ></script>
 </body>
 </html>

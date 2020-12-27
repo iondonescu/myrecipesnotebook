@@ -56,7 +56,7 @@ if (isset($_POST['submit'])) {
             }
             else {
                 // Incorrect username
-                $raspuns = "Acest email nu exista!Reîncercați sau mergeți la pagina de înregistrare.";
+                $raspuns = "Acest email nu exista! Reîncercați sau mergeți la pagina de înregistrare.";
             }
             $stmt->close();
         }

@@ -1,9 +1,9 @@
 <?php
 session_start();
-// If the poza_profil is not logged in redirect to the login page...
+
 if (!isset($_SESSION['loggedin'])) {
     //var_dump($_SESSION['nume']);
-    //header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }
 include('../conectare.php');
@@ -15,8 +15,8 @@ if (isset($connect)) {
     $resultReteta = mysqli_query($connect, "SELECT titlu FROM reteta WHERE codreteta = '$q'");
     $row = $resultReteta->fetch_assoc();
     $titluReteta = $row["titlu"];
-
 }
+
 
 
 //echo $q.'<p>A mers</p>
@@ -34,51 +34,88 @@ echo '<header id="header">
 </header>
     <h2 class="title">'.$titluReteta
     .'</h2>
-    <div style="width: 100%;display: flex">
-        <div style="width:50%">
-            <img src="" alt="fotografii ale retetei">
-        </div style="width:50%">
-        <div>
-            <table>
-                <thead>
-                <th>Materie primă</th>
-                <th>U/M</th>
-                <th>Cantitate</th>
-                <th>Observații</th>
-                <th> Șterge</th>
-                </thead>
-                <tbody>
-                <tr class="row">
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    <td>
-
-                    </td>
-
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <div  style="width: 100%;display: flex">
+        <div class="reteta_img">';
+            /*
+             * preluăm fotografiile rețetei din DB
+             */
+            if (isset($connect)) {
+                $resultFoto = mysqli_query($connect, "SELECT codreteta,owner,numefotografie FROM fotoretete WHERE codreteta = '$q'");
+            };
+             while ($row = $resultFoto->fetch_assoc()) {
+                 $codReteta = $row["codreteta"];
+                 $ownerReteta = $row["owner"];
+                 $file = $row["numefotografie"];
+                  echo '<img class="visibility reteta_imagine" src="' . $ownerReteta . '/' . $codReteta . '/foto/' . $file . '" alt = "fotografii ale retetei" >';
+             };
+    echo    '<i class="left-button left-button-float fas fa-arrow-circle-left" onclick="increment(-1)"></i>
+            <i class="right-button right-button-float fas fa-arrow-circle-right" onclick ="increment(+1)"></i>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                    <th>Materie primă</th>
+                    <th>U/M</th>
+                    <th>Cantitate</th>
+                    <th>Observații</th>
+                    </thead>
+                    <tbody>';
+            /*
+             * Preluam materiile prime din DB
+             */
+            if (isset($connect)) {
+                $resultMaterii = mysqli_query($connect, "SELECT codreteta,materieprima,um,cantitate,observatii FROM materiiprime WHERE codreteta = '$q'");
+            }
+            while ($row = $resultMaterii->fetch_assoc()) {
+                $materiePrima = $row["materieprima"];
+                $um = $row["um"];
+                $cantitate = $row['cantitate'];
+                $observatii = $row['observatii'];
+                   echo '<tr class="row">
+                        <td>';
+                            echo  $materiePrima;
+                        echo '</td>
+                        <td>';
+                            echo $um;
+                        echo '</td>
+                        <td>';
+                            echo $cantitate;
+                        echo '</td>
+                        <td>';
+                            echo $observatii;
+                        echo '</td>
+                    </tr>';
+                    }
+                    echo '</tbody>
+                </table>
+            </div>
     </div>
-    <div style="width:100%">
+    <div class="pregatire" style="width:100%">
         <h3>Pregătire:</h3>
-        <p></p>
-        <h3>Preparare:</h3>
-        <p></p>
+        <p style="max-width: 1200px">    ';
+            /*
+             * Citim din fisiere modul de preparare
+             */
+            //$myfilePregatire = fopen($ownerReteta.'/'.$codReteta.'/pregatire_'.$codReteta.'.txt', 'r') or die("Unable to open file!");
+            echo '&emsp;&emsp;'.file_get_contents($ownerReteta.'/'.$codReteta.'/pregatire_'.$codReteta.'.txt');
+            //fclose($myfilePregatire);
+            echo '</p>
+        <h3>Modul de preparare:</h3>
+        <p style="max-width: 1200px">    ';
+            //$myfilePreparare = fopen($ownerReteta.'/'.$codReteta.'/preparare_'.$codReteta.'.txt', 'r') or die("Unable to open file!");
+            echo '&emsp;&emsp;'.file_get_contents($ownerReteta.'/'.$codReteta.'/preparare_'.$codReteta.'.txt');
+            //fclose($myfilePreparare);
+            echo '</p>
         <h3>Servire:</h3>
-        <p></p>
+        <p style="max-width: 1200px">    ';
+            //$myfileServire = fopen($ownerReteta.'/'.$codReteta.'/servire_'.$codReteta.'.txt', 'r') or die("Unable to open file!");
+            echo '&emsp;&emsp;'.file_get_contents($ownerReteta.'/'.$codReteta.'/servire_'.$codReteta.'.txt');
+            //fclose($myfileServire);
+            echo '</p>
     </div>
-</main>';
+</main><br/><br/>
+';
+include("../footer.html");
 ?>
 
 

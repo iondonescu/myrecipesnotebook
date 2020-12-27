@@ -106,7 +106,7 @@ if (isset($connect)) {
 
 </main>
 <?php
-include("../footer.html")
+include("../footer.html");
 ?>
 <script src="retetaMea.js" ></script>
 </body>

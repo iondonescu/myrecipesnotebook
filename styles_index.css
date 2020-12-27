@@ -62,7 +62,7 @@ body {
     display:flex;
     justify-content: center;
     visibility: visible;
-    height: 120px;
+    height: 80px;
 }
 .nav_bar_items{
     line-height: 40px;
@@ -94,23 +94,18 @@ ul li{
 .title{
     text-align: center;
 }
-
-.food_image,.food_images {
-    width:450px;
-    height: 300px;
-    border-radius: 10px;
-    position: relative;
-    text-align: center;
-}
-.food_image_display_block{
-    display:block;
-}
-.food_image_display_none{
-    display:none;
+.retete{
+    display:inline-flex;
+    flex-wrap: wrap;
+    grid-auto-flow:row;
+    margin:10px;
 }
 
 .auto{
-    margin: 0 auto;
+    margin: 20px;
+    border-style: solid;
+    border-color:lightblue;
+    text-align: center;
 }
 .left_button{
     width: 40px;
@@ -132,7 +127,6 @@ ul li{
     visibility:hidden;/*toggle if there are more than one photo */
 }
 .left_button_float,.right-button-float{
-     color:white;
      font-size: 40px;
  }
 footer{

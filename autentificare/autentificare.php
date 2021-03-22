@@ -3,7 +3,7 @@ session_start();
 include("../conectare.php");
 include("../functii/emailExists.php");
 
-$raspuns ="";//variabila utilizata pt a afisa erori ex: parola introdusa gresit
+$raspuns = "";//variabila utilizata pt a afisa erori ex: parola introdusa gresit
 
 if (isset($_POST['submit'])) {
 
@@ -48,13 +48,11 @@ if (isset($_POST['submit'])) {
                         $_SESSION['email'] = $email;
                         // redirectioneaza catre pagina utilizatorului
                         header('Location: ../users/user_home_page.php');
-                    }
-                    else {
-                        $raspuns = "Parola incorecta";
+                    } else {
+                        $raspuns = "E-mail sau parola incorecte";
                     }
                 }
-            }
-            else {
+            } else {
                 // Incorrect username
                 $raspuns = "Acest email nu exista! Reîncercați sau mergeți la pagina de înregistrare.";
             }
@@ -68,60 +66,58 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-    <title>Autentificare</title>
-    <link rel="stylesheet" href="css/autentificare.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- folosim framework-ul bootstrap 4.1-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style.css">
+    <title>Recipesnotebook</title>
 </head>
 
 
 <body>
-<header id="header">
-    <div class="header_inner">
-        <div class="gif">
-            <img class="header_gif" src="../fire.gif" alt="fire">
+<?php
+include ("../header.html");
+?>
+
+<!--sectiunea de autentificare-->
+<section>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Autentificare</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- method POST is for background data "you don't see anything in URL" -->
+                        <!--enctype -- to be able to upload file such as images -->
+                        <form method="post" action="../autentificare/autentificare.php" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="email">E-mail</label>
+                                <input class="form-control" type="text" name="email" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Parolă</label>
+                                <input class="form-control" type="password" name="parola" required/>
+                            </div>
+                            <input class="btn btn-primary btn-block" type="submit" name="submit" value="Autentifică"/>
+                        </form>
+                        <div id="raspuns">
+                            <?php echo $raspuns; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="page_title">
-            <h1>Carnețelul de rețete culinare</h1>
-        </div>
-        <div class="login_section login">
-            <p class="item_login text_color">Autentificare</p>
-            <a class="item_login item_login_hover" href="../inregistrare/inregistrare.php">Inregistrare</a>
-        </div>
     </div>
-
-</header>
-<div id="wrapper">
-    <h3 id="title">Bine ai venit  pe <br/> myrecipesnotebook.com</h3>
-    <div id="formDiv">
-        <!-- method POST is for background data "you don't see anything in URL" -->
-        <!--enctype -- to be able to upload file such as images -->
-        <form method="POST" action="../autentificare/autentificare.php" enctype="multipart/form-data">
-
-            <label>
-                Email:<br/>
-                <input type="text" name="email" class="input_fields" required/>
-            </label><br/><br/>
-
-            <label>
-                Parola:<br/>
-                <input type="password" name="parola" class="input_fields" required/>
-            </label><br/><br/>
-
-            <input type="submit" class="the_buttons" name="submit" value="Autentifica"/>
-
-        </form>
-
-    </div>
-
-    <div id="raspuns">
-        <?php echo $raspuns; ?>
-    </div>
-
-</div>
-<footer>
-    <div class="footer">
-        <p>&copy 2020-2021 Dezvoltarea Aplicațiilor Web - FMI - Ion Donescu</p>
-    </div>
-</footer>
+</section>
+<!-- FOOTER -->
+<?php
+include("../footer.html");
+?>
 
 </body>
 

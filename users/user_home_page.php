@@ -4,7 +4,7 @@ session_start();
 // If the poza_profil is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
     //var_dump($_SESSION['nume']);
-    //header('Location: index.php');
+    //header('Location: retetar.php');
     exit;
 }
 include('../conectare.php');

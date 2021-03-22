@@ -6,7 +6,7 @@ include("../conectare.php");
  */
 date_default_timezone_set('Europe/Bucharest');
 //variabila utilizata pt a afisa erori
-$raspuns ="";
+$raspuns = "";
 if (isset($_POST['submit'])) {
     //mysqli_real_escape_string - function that avoid mysqli injection with malicious code
     if (isset($connect)) {
@@ -41,10 +41,10 @@ if (isset($_POST['submit'])) {
         $raspuns = "Parolele nu se potrivesc";
     };
 
-/*
- * Opțional introducem o poză de profil
- * Dacă nu introducem este utilizată una generică
- */
+    /*
+     * Opțional introducem o poză de profil
+     * Dacă nu introducem este utilizată una generică
+     */
     if ($_FILES['imageupload']['name'] == "") {
         $avatar = "chef.png";
     } else {
@@ -97,38 +97,38 @@ if (isset($_POST['submit'])) {
             }
         }
 
-            if ($stmt = $connect->prepare('SELECT id,nume,prenume,email,parola,avatar FROM users WHERE email = ?')) {
-                echo "prepare";
-                $stmt->bind_param('s', $_POST['email']);
-                $stmt->execute();
+        if ($stmt = $connect->prepare('SELECT id,nume,prenume,email,parola,avatar FROM users WHERE email = ?')) {
+            echo "prepare";
+            $stmt->bind_param('s', $_POST['email']);
+            $stmt->execute();
 
-                /**
-                 * Inregistram datele utilizatorului in zona de memorie la care pointeaza cursorul
-                 **/
-                $stmt->store_result();
+            /**
+             * Inregistram datele utilizatorului in zona de memorie la care pointeaza cursorul
+             **/
+            $stmt->store_result();
 
-                /**
-                 * daca interogarea a returnat o singura linie( adresa de mail este unica, conform conditiilor
-                 * impuse la inregistrare in DB)
-                 **/
-                if ($stmt->num_rows == 1) {
-                    $stmt->bind_result($id, $nume, $prenume, $email, $parola, $avatar);
-                    $stmt->fetch();
-                }
-                session_regenerate_id();
-                $_SESSION['loggedin'] = TRUE;
-                $_SESSION['nume'] = $nume;
-                $_SESSION['prenume'] = $prenume;
-                $_SESSION['id'] = $id;
-                $_SESSION['avatar'] = $avatar;
-                $_SESSION['email'] = $email;
-                //var_dump($_SESSION['loggedin']);
-                mkdir("../users/".$_SESSION['email']);
-                header("location:../users/user_home_page.php");
-
+            /**
+             * daca interogarea a returnat o singura linie( adresa de mail este unica, conform conditiilor
+             * impuse la inregistrare in DB)
+             **/
+            if ($stmt->num_rows == 1) {
+                $stmt->bind_result($id, $nume, $prenume, $email, $parola, $avatar);
+                $stmt->fetch();
             }
-            $stmt->close();
-        }else {
+            session_regenerate_id();
+            $_SESSION['loggedin'] = TRUE;
+            $_SESSION['nume'] = $nume;
+            $_SESSION['prenume'] = $prenume;
+            $_SESSION['id'] = $id;
+            $_SESSION['avatar'] = $avatar;
+            $_SESSION['email'] = $email;
+            //var_dump($_SESSION['loggedin']);
+            mkdir("../users/" . $_SESSION['email']);
+            header("location:../users/user_home_page.php");
+
+        }
+        $stmt->close();
+    } else {
         $raspuns = "Aceasta adresa de email deja exista.Reîncercați sau autentificați-vă!";
     }
 
@@ -139,82 +139,75 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-    <title>Inregistrare</title>
-    <link rel="stylesheet" href="css/inregistrare.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- folosim framework -ul bootstrap 4.1-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style.css">
+    <title>Recipesnotebook</title>
 </head>
 
-
 <body>
-<header id="header">
-    <div class="header_inner">
-        <div class="gif">
-            <img class="header_gif" src="../fire.gif" alt="fire">
-        </div>
-        <div class="page_title">
-            <h1>Carnețelul de rețete culinare</h1>
-        </div>
-        <div class="login_section login">
-            <a class="item_login item_login_hover" href="../autentificare/autentificare.php">Autentificare</a>
-            <p class="item_login text_color">Inregistrare</p>
+<?php
+include ("../header.html")
+?>
+<!-- Sign-in -->
+<section>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Înregistrare</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- method POST is for background data "you don't see anything in URL" -->
+                        <!-- enctype -- to be able to upload file such as images -->
+                        <form method="POST" action="../inregistrare/inregistrare.php" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="nume">Nume</label>
+                                <input class="form-control" type="text" name="nume" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="prenume">Prenume</label>
+                                <input class="form-control" type="text" name="prenume" required/ >
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-mail</label>
+                                <input class="form-control" type="text" name="email" required/ >
+                            </div>
+                            <div class="form-group">
+                                <label for="parola">Parolă</label>
+                                <input class="form-control" type="password" name="parola" required/ >
+                            </div>
+                            <div class="form-group">
+                                <label for="parola">Reintroduceți parola</label>
+                                <input class="form-control" type="password" name="confirmaParola" required/ >
+                            </div>
+                            <div class="form-group">
+                                <label for="avatar">Alege o imagine ca avatar (optional)</label>
+                                <input type="file" id="avatar" name="imageupload" />
+                            </div>
+                            <!-- aici ar trebui sa fie un modal-->
+                            <p id="mesaj"></p>
+                            <input class="btn btn-primary btn-block" id="trimite" type="submit" name="submit" value="Carnețelul meu" />
+                        </form>
+                        <div id="raspuns">
+                            <?php //echo $raspuns; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</header>
-
-<div id="wrapper">
-    <h3 id="title">Bine ai venit  pe <br/> myrecipesnotebook.com</h3>
-    <div id="formDiv">
-        <!-- method POST is for background data "you don't see anything in URL" -->
-        <!--enctype -- to be able to upload file such as images -->
-        <form method="POST" action="../inregistrare/inregistrare.php" enctype="multipart/form-data">
-
-            <label>
-                Nume:<br/>
-                <input type="text" name="nume" class="input_fields"  required/>
-            </label><br/><br/>
-
-            <label>
-                Prenume:<br/>
-                <input type="text" name="prenume" class="input_fields" required/>
-            </label><br/><br/>
-
-            <label>
-                Email:<br/>
-                <input type="text" name="email" class="input_fields" required/>
-            </label><br/><br/>
-
-            <label>
-                Parola:<br/>
-                <input type="password" name="parola" class="input_fields" required/>
-            </label><br/><br/>
-
-            <label>
-                Reintroduceti parola:<br/>
-                <input type="password" name="confirmaParola" class="input_fields" required/>
-            </label><br/><br/>
-
-            <label>
-                Alege o imaginea de profil(optional):<br/>
-                <input type="file" id="avatar" name="imageupload" />
-            </label><br/><br/>
-
-            <input  id="trimite" type="submit" class="the_buttons" name="submit" value="Submit"/>
-
-        </form>
-
-    </div>
-
-    <div id="raspuns">
-        <?php echo $raspuns; ?>
-    </div>
-
-</div>
+</section>
 <!--2020.12.01 De stilizat form-ul de inregistrare si adaugat butonul Renunta.
 La click se revine la pagina index.php -->
-<footer>
-    <div class="footer">
-        <p>&copy 2020-2021 Dezvoltarea Aplicațiilor Web - FMI - Ion Donescu</p>
-    </div>
-</footer>
+<?php
+include("../footer.html");
+?>
 
 </body>
 </html>

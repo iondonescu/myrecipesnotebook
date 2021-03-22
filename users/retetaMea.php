@@ -3,7 +3,7 @@ session_start();
 
 if (!isset($_SESSION['loggedin'])) {
     //var_dump($_SESSION['nume']);
-    header('Location: ../index.php');
+    header('Location: ../retetar.php');
     exit;
 }
 include('../conectare.php');

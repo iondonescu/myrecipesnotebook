@@ -1,0 +1,12 @@
+.foto-reteta{
+    position: absolute;
+}
+.avatar{
+    border-radius: 50%;
+    border:solid lightgray;
+    position:relative;
+}
+.reteta{
+    width: 176px;
+    height: 126px;
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Pentru a fi responsive-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- librarie de fonturi recomandata de bootstrap-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+          integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <!-- folosim framework -ul bootstrap 4.1-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Recipesnotebook</title>
+</head>
+
+<body>
+<div class="mx-2 my-2">
+    <div class="container">
+        <div class="row">
+            <img class="w-25 d-none d-lg-block img-fluid" src="img/sigla-fmi-1.png" alt="fmi-logo">
+            <div class="text-center my-auto mx-auto">
+                <h4>Aplicație web pentru rețete culinare</h4>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<section class="my-auto">
+    <div class="mx-3 my-4">
+        <div class="container">
+            <img class="main-background" src="img/pasta.png">
+            <div class="text-center">
+                <!--display class as h1-h6-->
+                <h4 class="pt-3">Bine ai venit </br>pe </br> <span class="display-6"
+                                                                   style="text-transform: uppercase;">carnețelul
+              culinar</span></h4>
+                <!-- class lead to stand out-->
+                <p class="mx-3">Salvează și accesează, oricând și de oriunde, rețetele tale culinare sau ale altora.</p>
+                <hr class="mx-3">
+
+                <img src="img/avatar.png" style="width: 50px; height: 50px;">
+                <!--class row afiseaza div-ul pe linie-->
+                <div class="row text-center">
+                    <div class="col">
+                        <a class="btn btn-primary btn-sm" href="autentificare/autentificare.php" role="button">Autentificare</a>
+                        <p>Sunt deja membru.</p>
+                    </div>
+                    <!-- class btn-primary il face albastru, btn-sn-->
+                    <div class="col">
+                        <a class="btn btn-primary btn-sm" href="inregistrare/inregistrare.php" role="button">Înregistrare</a>
+                        <p>Vreau carnețelul meu.</p>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="col">
+                        <a class="btn btn-primary btn-sm" href="retetar/retetar.php" role="button">Vizitator</a>
+                        <p>Ce gătește lumea?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- FOOTER -->
+
+<footer class="p-1 position-relative">
+
+    <div class="col text-center">
+        <p>Copyright &copy;
+            Ion Donescu</p>
+    </div>
+
+
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous">
+</script>
+</body>
+
+</html>

@@ -24,10 +24,10 @@ echo '<header id="header">
             <h1>Carnețelul meu de rețete culinare</h1>
         </div>
         <div class="login_section login">
-           <a class="item_login item_login_hover" href="index.php">Inapoi la retete</a>
+           <a class="item_login item_login_hover" href="retetar/retetar.php">Inapoi la retete</a>
         </div>
 </header>
-    <h2 class="title">'.$titluReteta
+    <h2 class="title">' .$titluReteta
     .'</h2>
     <div  style="width: 100%;display: flex">
         <div class="reteta_img">';

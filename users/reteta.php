@@ -133,7 +133,7 @@ if (isset($_POST['submit'])) {
      * incarcam o poza generica
      */
     $fotoName = $_FILES['foto']['name'];
-    var_dump($fotoName);
+    //var_dump($fotoName);
     //var_dump($foto);
     mkdir($retetaPath."foto");
     $tmp_foto = $_FILES['foto']['tmp_name'];
@@ -144,7 +144,7 @@ if($_FILES['foto']['size'][0] !== 0){
         move_uploaded_file($tmp_foto[$i],"$retetaPath/foto/$fotoName[$i]");
     }
     }else{
-        echo "nu exista fotografii";
+        //echo "nu exista fotografii";
         copy("chef.png","$retetaPath/foto/chef.png");
     }
 

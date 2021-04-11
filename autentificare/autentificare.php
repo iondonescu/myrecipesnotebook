@@ -36,7 +36,7 @@ if (isset($_POST['submit'])) {
                      **/
                     if (md5($_POST['parola']) === $parola) {
                         /**
-                         * Daca email-ul si parola se protrivesc updateaza sesiunea curenta
+                         * Daca email-ul si parola se potrivesc updateaza sesiunea curenta
                          * cu noile date ale utilizatorului
                          */
                         session_regenerate_id();
@@ -50,6 +50,7 @@ if (isset($_POST['submit'])) {
                         header('Location: ../users/user_home_page.php');
                     } else {
                         $raspuns = "E-mail sau parola incorecte";
+
                     }
                 }
             } else {
@@ -77,7 +78,7 @@ if (isset($_POST['submit'])) {
 </head>
 
 
-<body>
+<body class="py-3 container" style="max-width: 1200px">
 <?php
 include ("../header.html");
 ?>

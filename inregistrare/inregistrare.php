@@ -1,4 +1,7 @@
 <?php
+/*
+ * Inregistrarea unui utilizator nou
+ */
 session_start();
 include("../conectare.php");
 /**
@@ -22,116 +25,6 @@ if (isset($_POST['submit'])) {
     //fetch-uim intr-un array date introduse
     $interogare = mysqli_query($connect, "SELECT email FROM users WHERE email = '$email'");
     $raspunsInterogare = mysqli_fetch_assoc($interogare);
-    //var_dump($raspunsInterogare);
-
-    //echo $nume."<br/>".$prenume."<br/>".$email."<br/>".$parola."<br/>".$confirmaParola."<br/>".$poza_profil."<br/>".$avatarSize."<br/>".$data;
-//    if (strlen($nume) < 2) {
-//        $raspuns = "Nume prea scurt";
-//    };
-//
-//    if (strlen($prenume) < 2) {
-//        $raspuns = "Prenume prea scurt";
-//    };
-//
-//    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-//        $raspuns = "Introduceti o adresa de email valida";
-//    } else if (strlen($parola) < 6) {
-//        $raspuns = "Parola trebuie sa aibe cel putin 6 caractere";
-//    } else if ($parola !== $confirmaParola) {
-//        $raspuns = "Parolele nu se potrivesc";
-//
-//    /*
-//     * Opțional introducem o poză de profil
-//     * Dacă nu introducem este utilizată una generică
-//     */
-//    if ($_FILES['imageupload']['name'] == "") {
-//        $avatar = "chef.png";
-//    } else {
-//        $avatar = $_FILES['imageupload']['name'];
-//        $tmp_avatar = $_FILES['imageupload']['tmp_name'];
-//        $avatarSize = $_FILES['imageupload']['size'];
-//        //poza de profil nu poate sa fie mai mare de 1 MB
-//        //atentie si la setarile phpmyadmin
-//        if ($avatarSize > 5242880) {
-//            $raspuns = "Poza de profil nu poate fi mai mare de 5MB ";
-//        };
-//    }
-//    //daca nu exista inregistrata adresa de mail
-//    if (empty($raspunsInterogare['email'])) {
-//        //criptare parola cu functia md5
-//        $parola = md5($parola);
-//        // Verificam extensia avatarului, de implementat exceptia daca in denumire contine "."
-//        if ($avatar !== "chef.png") {
-//            $avatarExt = explode(".", $avatar);
-//            $avatarExtention = $avatarExt[1];
-//
-//            //Verificam daca avatarul are extensia png sau jpg
-//            if (strtoupper($avatarExtention) == "PNG" || strtoupper($avatarExtention) == "JPG") {
-//                //generam nume unic pentru poza_profil
-//                $avatar = rand(0, 10000) . time() . "." . $avatarExtention;
-//
-//                //$raspuns = "Inregistare cu succes";
-//                /**
-//                 * Daca validarea campurilor este ok inseram in baza de date
-//                 */
-//                $insertQuery = "INSERT INTO users (nume,prenume,email,parola,avatar,date) VALUES ('$nume','$prenume','$email','$parola','$avatar','$today')";
-//
-//                if (!empty($connect)) {
-//                    if (mysqli_query($connect, $insertQuery)) {
-//                        if (move_uploaded_file($tmp_avatar, "../users/images/poza_profil/$avatar")) {
-//                            $raspuns = "Inregistrare cu succes";
-//                        } else {
-//                            $raspuns = "Serverul nu suporta avatarul.<br/> Alegeti alta poza de profil";
-//                        }
-//                    }
-//                }
-//
-//            } else {
-//                $raspuns = "Avatarul trebuie sa fie imagine cu extensia png sau jpg";
-//            }
-//        } else {
-//            $insertQuery = "INSERT INTO users (nume,prenume,email,parola,avatar,date) VALUES ('$nume','$prenume','$email','$parola','chef.png','$today')";
-//            if (!empty($connect)) {
-//                mysqli_query($connect, $insertQuery);
-//            }
-//        }
-//
-//        if ($stmt = $connect->prepare('SELECT id,nume,prenume,email,parola,avatar FROM users WHERE email = ?')) {
-//            //echo "prepare";
-//            $stmt->bind_param('s', $_POST['email']);
-//            $stmt->execute();
-//
-//            /**
-//             * Inregistram datele utilizatorului in zona de memorie la care pointeaza cursorul
-//             **/
-//            $stmt->store_result();
-//
-//            /**
-//             * daca interogarea a returnat o singura linie( adresa de mail este unica, conform conditiilor
-//             * impuse la inregistrare in DB)
-//             **/
-//            if ($stmt->num_rows == 1) {
-//                $stmt->bind_result($id, $nume, $prenume, $email, $parola, $avatar);
-//                $stmt->fetch();
-//            }
-//            session_regenerate_id();
-//            $_SESSION['loggedin'] = TRUE;
-//            $_SESSION['nume'] = $nume;
-//            $_SESSION['prenume'] = $prenume;
-//            $_SESSION['id'] = $id;
-//            $_SESSION['avatar'] = $avatar;
-//            $_SESSION['email'] = $email;
-//            //var_dump($_SESSION['loggedin']);
-//            mkdir("../users/" . $_SESSION['email']);
-//
-//            header("location:../users/user_home_page.php");
-//
-//        }
-//        $stmt->close();
-//    } else {
-//        $raspuns = "Aceasta adresa de email există deja.Reîncercați sau autentificați-vă!";
-//    }
-//}
 
     if ($_FILES['imageupload']['name'] == "") {
         $avatar = "chef.png";

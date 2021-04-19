@@ -1,4 +1,7 @@
 <?php
+/*
+ * autentificarea unui utilizator inregistrat
+ */
 session_start();
 include("../conectare.php");
 include("../functii/emailExists.php");
